@@ -1,40 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>HOLLYWOOD</title>
-        <meta name="description" content="Hollywood is an academic front-end project for Web Development class.">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="./styles.css">
-    </head>
-    <body>
-        <header>
-            <nav>
-                <a href="/intro">Intro</a>
-                <a href="/movies">Movies</a>
-                <a href="/authores">Authores</a>
-            </nav>
-        </header>
-        <section>
-            <article>
-                <h1>Intro</h1>
-                <p></p>
-            </article>
-        </section>
-        <section>
-            <article>
-                <h1>Movies</h1>
-                <ul></ul>
-            </article>
-        </section>
-        <section>
-            <article>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>OctoMovies</title>
+    <meta name="description" content="Hollywood is an academic front-end project for Web Development class.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./main.js" async defer></script>
+</head>
+
+<body>
+    <div class="background"></div>
+    <header>
+        <img src="./assets/logo.svg" width="65px" />
+        <nav>
+            <a href="/intro">About</a>
+            <a href="/movies">Movies</a>
+        </nav>
+    </header>
+    <section class="small-section" id="aboutSection">
+        <article class="centered">
+            <div class="about-text">
+                <h1>OctoMovies</h1>
+                <p>
+                    OctoMovies is an academic project for the web development class from the UAL´s computer science
+                    engineering bachelor degree.
+                </p>
+                <p>
+                    An online database of information related to films, television programs, home videos, and streaming
+                    content online – including cast, production crew and personal biographies, plot summaries, trivia,
+                    ratings, and fan and critical reviews.
+                </p>
                 <h1>Authors</h1>
-                
-            </article>
-        </section>
-        <footer></footer>
-        <script src="main.js" async defer></script>
-    </body>
+                <ul>
+                    <li>Nuno Rodrigues 30002510</li>
+                    <li>Pedro Carvalho 30002510</li>
+                    <li>Pedro Martins 30002510</li>
+                </ul>
+            </div>
+        </article>
+    </section>
+    <section id="moviesSection">
+        <div class="tool-bar">
+            <input id="searchInput" type="text" placeholder="search...">
+            <button class="button" id="addMovieBtn">New Movie</button>
+        </div>
+        <article class="movies-container" id="moviesContainer">
+          <!--MOVIES WILL BE LOADED HERE-->
+        </article>
+    </section>
+    <footer>
+        All rights reserved 2020/2021
+    </footer>
+</body>
+
 </html>
