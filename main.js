@@ -221,27 +221,28 @@
       }
 
       function buildBackoffice(){
-        loggedUser.favourites.forEach((movie)=>{
-            let html = ` <tr>
-                <td><img src="${movie.thumbnail}"</td>
-                <td>${movie.title}</td>
-                <td>${movie.director}</td>
-                <td>${movie.producer}</td>
-                <td>${movie.cast}</td>
-                <td>${movie.description}</td>
-                <td><a href="${movie.trailerUrl}" target="blank"><span class="mdi mdi-play-box"></span></a></td>
-                <td><span class="mdi mdi-pencil" id="edit_${movie.id}"></span></td>
-                <td><span class="mdi mdi-delete" id="delete_${movie.id}"></span></td>
-            </tr>`;
-            document.querySelector("#movieList").innerHTML += html;
-        });
-    
-        const actions =  document.querySelectorAll("td>span");
-    
-        actions.forEach(a => {
-            a.addEventListener("click", triggerAction);
-        });
-    
+        if(loggedUser.favourites){
+            loggedUser.favourites.forEach((movie)=>{
+                let html = ` <tr>
+                    <td><img src="${movie.thumbnail}"</td>
+                    <td>${movie.title}</td>
+                    <td>${movie.director}</td>
+                    <td>${movie.producer}</td>
+                    <td>${movie.cast}</td>
+                    <td>${movie.description}</td>
+                    <td><a href="${movie.trailerUrl}" target="blank"><span class="mdi mdi-play-box"></span></a></td>
+                    <td><span class="mdi mdi-pencil" id="edit_${movie.id}"></span></td>
+                    <td><span class="mdi mdi-delete" id="delete_${movie.id}"></span></td>
+                </tr>`;
+                document.querySelector("#movieList").innerHTML += html;
+            });
+        
+            const actions =  document.querySelectorAll("td>span");
+        
+            actions.forEach(a => {
+                a.addEventListener("click", triggerAction);
+            });
+        }
       }
 
       function triggerAction(event){
