@@ -20,19 +20,13 @@
 
     /// LOCAL STORAGE MOVIES VALIDATION
     if (!movies) {
-        localStorage.setItem("movies", JSON.stringify(
-            [{
-                "title": "Movie Title",
-                "director": "Movie director name",
-                "cast": "actor name 1, actor name 2",
-                "genre": "action",
-                "location": "cinema location",
-                "producer": "producer name",
-                "thumbnail": "./assets/bg.jpeg",
-                "description": "Movie short text description"
-            }]
-        ));
-        movies = JSON.parse(localStorage.getItem("movies"));
+        fetch('./data/data.json')
+        .then(response => response.json())
+        .then(data => {
+            localStorage.setItem("movies", JSON.stringify(data));
+            movies = JSON.parse(localStorage.getItem("movies"));
+            loadMovies();
+        });
     }
 
     function loadMovies() {
@@ -48,7 +42,9 @@
             moviesContainer.innerHTML += `NO MOVIES`;
         }
     }
-    loadMovies();
+    if(movies){
+       loadMovies();
+    }
 
     loginButton.addEventListener("click", () => {
         if(!loggedUser){
@@ -89,7 +85,6 @@
         const users = JSON.parse(localStorage.getItem("users"));
         if (formElements["regUserPassword"].value === formElements["regUserRepPassword"].value) {
             if (!users || users.length == 0) {
-
                 localStorage.setItem("users", JSON.stringify([{
                     name: formElements["regName"].value,
                     userName: formElements["regUserName"].value,
@@ -97,7 +92,6 @@
                     password: formElements["regUserPassword"].value,
                     favourites:[]
                 }]));
-
             } else {
                 const user = users.find((u) => {
                     if(u.userName === formElements["regUserName"].value || u.email === formElements["regUserEmail"].value){
@@ -106,6 +100,7 @@
                 });
                 if (user) {
                     alert("Username already exists, please try other!");
+                    return;
                 } else {
                     const user = {
                         id: guid(),
@@ -113,13 +108,14 @@
                         userName: formElements["regUserName"].value,
                         email: formElements["regUserEmail"].value,
                         password: formElements["regUserPassword"].value,
+                        favourites:[]
                     };
                     users.push(user);
                     localStorage.setItem("users", JSON.stringify(users));
-                    alert("User registered with success!");
-                    dialogue.classList.remove("show");
                 }
             }
+            alert("User registered with success!");
+            dialogue.classList.remove("show");
         } else {
             alert("Passwords don't match, please try again!");
         }
