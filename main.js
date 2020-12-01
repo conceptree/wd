@@ -10,7 +10,13 @@
     const regForm = document.querySelector("#regForm");
     const loginForm = document.querySelector("#loginForm");
     let openMovie = null;
+    let loggedUser = JSON.parse(localStorage.getItem("userSession"));
     let movies = JSON.parse(localStorage.getItem("movies"));
+
+    if(loggedUser){
+        document.querySelector("#userLoginName").innerHTML = loggedUser.name;
+        buildBackoffice();
+    }
 
     /// LOCAL STORAGE MOVIES VALIDATION
     if (!movies) {
@@ -45,7 +51,11 @@
     loadMovies();
 
     loginButton.addEventListener("click", () => {
-        dialogue.classList.add("show");
+        if(!loggedUser){
+            dialogue.classList.add("show");
+        }else{
+            document.querySelector("#backoffice").classList.add("show");
+        }
     });
 
     loginForm.addEventListener("submit", (event) => {
@@ -61,8 +71,12 @@
                 }
             });
             if (user) {
+                loggedUser = user;
+                localStorage.setItem("userSession", JSON.stringify(loggedUser));
+                document.querySelector("#userLoginName").innerHTML = loggedUser.name;
                 window.open("./backoffice/", "_target");
                 dialogue.classList.remove("show");
+                buildBackoffice();
             } else {
                 alert("Invalid Credentials, please try again!");
             }
@@ -153,6 +167,34 @@
         window.open(openMovie.trailerUrl, "_blank");
     });
 
+    document.querySelector("#addToFavourites").addEventListener("click", () => {
+        if(!loggedUser){
+            alert("You have to login!");
+        }else{
+            loggedUser.favourites.push(openMovie);
+            localStorage.setItem("userSession",JSON.stringify(loggedUser));
+            alert("Movie added to favourites!");
+            document.querySelector(".movie-details").classList.remove("show");
+            buildBackoffice();
+        }
+    });
+
+    document.querySelector("#navigation").addEventListener("click", (event)=>{
+        let scroll = null;
+        if(event.target.id === "goToAbout"){
+            scroll = {
+                top: document.querySelector("#aboutSection").offsetTop-80,
+                behavior: 'smooth'
+              }
+        }else{
+            scroll = {
+                top: document.querySelector("#moviesSection").offsetTop-80,
+                behavior: 'smooth'
+              }
+        }
+        window.scrollTo(scroll);
+    });
+
     function guid() {
         function s4() {
             return Math.floor((1 + Math.random()) * 0x10000)
@@ -162,5 +204,62 @@
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
             s4() + '-' + s4() + s4() + s4();
     }
+
+    function debounce( fn, threshold ) {
+        var timeout;
+        threshold = threshold || 100;
+        return function debounced() {
+          clearTimeout( timeout );
+          var args = arguments;
+          var _this = this;
+          function delayed() {
+            fn.apply( _this, args );
+          }
+          timeout = setTimeout( delayed, threshold );
+        };
+      }
+
+      function buildBackoffice(){
+        loggedUser.favourites.forEach((movie)=>{
+            let html = ` <tr>
+                <td><img src="${movie.thumbnail}"</td>
+                <td>${movie.title}</td>
+                <td>${movie.director}</td>
+                <td>${movie.producer}</td>
+                <td>${movie.cast}</td>
+                <td>${movie.description}</td>
+                <td><a href="${movie.trailerUrl}" target="blank"><span class="mdi mdi-play-box"></span></a></td>
+                <td><span class="mdi mdi-pencil" id="edit_${movie.id}"></span></td>
+                <td><span class="mdi mdi-delete" id="delete_${movie.id}"></span></td>
+            </tr>`;
+            document.querySelector("#movieList").innerHTML += html;
+        });
+    
+        const actions =  document.querySelectorAll("td>span");
+    
+        actions.forEach(a => {
+            a.addEventListener("click", triggerAction);
+        });
+    
+      }
+
+      function triggerAction(event){
+        const actionType = event.target.id.split("_")[0];
+        const objectId = event.target.id.split("_")[1];
+
+        if(actionType === "edit"){
+            alert("This action will only be available on the second part of this project!");
+        }else if(actionType === "delete"){
+            loggedUser.favourites = loggedUser.favourites.filter(m => m.id != objectId);
+            localStorage.setItem("userSession", JSON.stringify(loggedUser));
+            setTimeout(()=>{
+                window.location.reload();
+            },1000);
+        }
+    }
+
+    document.querySelector("#closeBackoffice").addEventListener("click", ()=>{
+        document.querySelector("#backoffice").classList.remove("show");
+    });
 
 }());
