@@ -202,22 +202,9 @@
             s4() + '-' + s4() + s4() + s4();
     }
 
-    function debounce( fn, threshold ) {
-        var timeout;
-        threshold = threshold || 100;
-        return function debounced() {
-          clearTimeout( timeout );
-          var args = arguments;
-          var _this = this;
-          function delayed() {
-            fn.apply( _this, args );
-          }
-          timeout = setTimeout( delayed, threshold );
-        };
-      }
-
       function buildBackoffice(){
         if(loggedUser.favourites){
+            document.querySelector("#movieList").innerHTML = "";
             loggedUser.favourites.forEach((movie)=>{
                 let html = ` <tr>
                     <td><img src="${movie.thumbnail}"</td>
@@ -250,9 +237,7 @@
         }else if(actionType === "delete"){
             loggedUser.favourites = loggedUser.favourites.filter(m => m.id != objectId);
             localStorage.setItem("userSession", JSON.stringify(loggedUser));
-            setTimeout(()=>{
-                window.location.reload();
-            },1000);
+            buildBackoffice();
         }
     }
 
