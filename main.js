@@ -95,6 +95,7 @@
                     userName: formElements["regUserName"].value,
                     email: formElements["regUserEmail"].value,
                     password: formElements["regUserPassword"].value,
+                    favourites:[]
                 }]));
 
             } else {
