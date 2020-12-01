@@ -74,9 +74,9 @@
                 loggedUser = user;
                 localStorage.setItem("userSession", JSON.stringify(loggedUser));
                 document.querySelector("#userLoginName").innerHTML = loggedUser.name;
-                window.open("./backoffice/", "_target");
                 dialogue.classList.remove("show");
                 buildBackoffice();
+                alert("You are now logged in!");
             } else {
                 alert("Invalid Credentials, please try again!");
             }
